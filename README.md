@@ -34,5 +34,5 @@ MIT © [Kairos DS Team]()
 [travis-url]: https://travis-ci.org/KairosDS/generator-polymer-init-firebase-auth-roles
 [daviddm-image]: https://david-dm.org/KairosDS/generator-polymer-init-firebase-auth-roles.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org/KairosDS/generator-polymer-init-firebase-auth-roles
-[coveralls-image]: https://coveralls.io/repos/KairosDS/generator-polymer-init-firebase-auth-roles/badge.svg
-[coveralls-url]: https://coveralls.io/r/KairosDS/generator-polymer-init-firebase-auth-roles
+[coveralls-image]: https://coveralls.io/repos/github/KairosDS/generator-polymer-init-firebase-auth-roles/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/KairosDS/generator-polymer-init-firebase-auth-roles?branch=master
