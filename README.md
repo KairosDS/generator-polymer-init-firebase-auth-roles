@@ -28,11 +28,11 @@ yo polymer-init-firebase-auth-roles
 MIT © [Kairos DS Team]()
 
 
-[npm-image]: https://badge.fury.io/js/generator-polymer-init-firebase-auth-roles.svg
-[npm-url]: https://npmjs.org/package/generator-polymer-init-firebase-auth-roles
-[travis-image]: https://travis-ci.org/jorgecasar/generator-polymer-init-firebase-auth-roles.svg?branch=master
-[travis-url]: https://travis-ci.org/jorgecasar/generator-polymer-init-firebase-auth-roles
-[daviddm-image]: https://david-dm.org/jorgecasar/generator-polymer-init-firebase-auth-roles.svg?theme=shields.io
-[daviddm-url]: https://david-dm.org/jorgecasar/generator-polymer-init-firebase-auth-roles
-[coveralls-image]: https://coveralls.io/repos/jorgecasar/generator-polymer-init-firebase-auth-roles/badge.svg
-[coveralls-url]: https://coveralls.io/r/jorgecasar/generator-polymer-init-firebase-auth-roles
+[npm-image]: https://badge.fury.io/js/%40kairosds%2Fgenerator-polymer-init-firebase-auth-roles.svg
+[npm-url]: https://npmjs.org/package/@kairosds/generator-polymer-init-firebase-auth-roles
+[travis-image]: https://travis-ci.org/KairosDS/generator-polymer-init-firebase-auth-roles.svg?branch=master
+[travis-url]: https://travis-ci.org/KairosDS/generator-polymer-init-firebase-auth-roles
+[daviddm-image]: https://david-dm.org/KairosDS/generator-polymer-init-firebase-auth-roles.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/KairosDS/generator-polymer-init-firebase-auth-roles
+[coveralls-image]: https://coveralls.io/repos/KairosDS/generator-polymer-init-firebase-auth-roles/badge.svg
+[coveralls-url]: https://coveralls.io/r/KairosDS/generator-polymer-init-firebase-auth-roles
