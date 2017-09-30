@@ -1,6 +1,6 @@
 {
   "name": "@kairosds/generator-polymer-init-firebase-auth-roles",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Polymer Gerator with Firebase auth roles",
   "homepage": "https://github.com/kairosds/generator-polymer-init-firebase-auth-roles#readme",
   "author": "Kairos DS Team <jorge.casar@kairosds.com>",
