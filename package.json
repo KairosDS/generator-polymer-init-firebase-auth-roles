@@ -1,0 +1,57 @@
+{
+  "name": "@kairosds/generator-polymer-init-firebase-auth-roles",
+  "version": "0.1.0",
+  "description": "Polymer Gerator with Firebase auth roles",
+  "homepage": "https://github.com/kairosds/generator-polymer-init-firebase-auth-roles#readme",
+  "author": "Kairos DS Team <jorge.casar@kairosds.com>",
+  "files": [
+    "generators"
+  ],
+  "main": "generators/index.js",
+  "keywords": [
+    "poyler",
+    "yeoman-generator",
+    "firebase",
+    "auth",
+    "roles"
+  ],
+  "devDependencies": {
+    "yeoman-test": "^1.6.0",
+    "yeoman-assert": "^3.0.0",
+    "coveralls": "^2.13.1",
+    "nsp": "^2.6.3",
+    "eslint": "^4.1.0",
+    "eslint-config-xo-space": "^0.16.0",
+    "jest": "^21.0.0",
+    "jest-cli": "^21.0.0"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "change-case": "^3.0.1",
+    "yeoman-generator": "^1.0.0",
+    "yosay": "^2.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "scripts": {
+    "prepublish": "nsp check",
+    "pretest": "eslint . --fix",
+    "test": "jest"
+  },
+  "eslintConfig": {
+    "extends": "xo-space",
+    "env": {
+      "jest": true,
+      "node": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kairosds/generator-polymer-init-firebase-auth-roles.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kairosds/generator-polymer-init-firebase-auth-roles/issues"
+  }
+}

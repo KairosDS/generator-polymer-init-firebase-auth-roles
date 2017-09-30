@@ -1,0 +1,28 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/<%= appNameDash %>.html",
+  "fragments": [
+    "src/view-admin.html",
+    "src/view-home.html",
+    "src/view-user.html",
+    "src/view-404.html"
+  ],
+  "sources": [
+    "src/**/*",
+    "images/**/*",
+    "bower.json"
+  ],
+  "extraDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/*.js"
+  ],
+  "lint": {
+    "rules": ["polymer-2"]
+  },
+  "builds": [
+    {
+      "name": "default",
+      "preset": "es5-bundled"
+    }
+  ]
+}

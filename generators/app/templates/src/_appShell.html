@@ -1,0 +1,329 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/lazy-imports/lazy-imports-mixin.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" async href="../bower_components/app-route/app-location.html">
+<link rel="import" async href="../bower_components/app-route/app-route.html">
+<link rel="import" async href="../bower_components/polymerfire/firebase-app.html">
+<link rel="import" async href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" async href="my-icons.html">
+
+<dom-module id="<%= appNameDash %>">
+  <link rel="lazy-import" group="home" href="view-home.html">
+  <link rel="lazy-import" group="admin" href="view-admin.html">
+  <link rel="lazy-import" group="user" href="view-user.html">
+  <link rel="lazy-import" group="view404" href="view-404.html">
+
+  <link rel="lazy-import" group="authenticated" href="../bower_components/polymerfire/firebase-document.html">
+  <link rel="lazy-import" group="admin" href="../bower_components/iron-selector/iron-selector.html">
+  <link rel="lazy-import" group="admin" href="../bower_components/iron-pages/iron-pages.html">
+  <link rel="lazy-import" group="admin" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+
+  <template>
+    <style>
+      :host {
+        --app-primary-color: #4285f4;
+        --app-secondary-color: black;
+
+        display: block;
+      }
+      [hidden] {
+        display: none;
+      }
+      app-drawer-layout:not([narrow]) [drawer-toggle] {
+        display: none;
+      }
+
+      app-header {
+        color: #fff;
+        background-color: var(--app-primary-color);
+      }
+
+      app-header paper-icon-button {
+        flex-shrink: 0;
+        --paper-icon-button-ink-color: white;
+      }
+
+      .drawer-list {
+        margin: 0 20px;
+      }
+
+      .drawer-list a {
+        display: block;
+        padding: 0 16px;
+        text-decoration: none;
+        color: var(--app-secondary-color);
+        line-height: 40px;
+      }
+
+      .drawer-list a.iron-selected {
+        color: black;
+        font-weight: bold;
+      }
+
+      .avatar {
+        padding: 0;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+    </style>
+
+    <firebase-app
+        api-key="[[apiKey]]"
+        auth-domain="[[projectId]].firebaseapp.com"
+        database-url="https://[[projectId]].firebaseio.com"
+        storage-bucket="[[projectId]].appspot.com"
+        messaging-sender-id="[[messagingSenderId]]">
+    </firebase-app>
+
+    <firebase-auth
+        id="auth"
+        provider="google"
+        user="{{loggedUser}}"
+        signed-in="{{authenticated}}">
+    </firebase-auth>
+
+    <firebase-document
+      id="document"
+      data="{{user}}">
+    </firebase-document>
+
+    <firebase-document
+      id="role"
+      path="/roles/[[loggedUser.uid]]"
+      data="{{role}}">
+    </firebase-document>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="[[rootPattern]]:page"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
+
+    <app-drawer-layout id="appDrawerLayout" fullbleed>
+      <template is="dom-if" if="[[isAdmin(role)]]">
+        <!-- Drawer content -->
+        <app-drawer id="drawer" slot="drawer">
+          <app-toolbar>Menu</app-toolbar>
+            <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+              <a name="admin" href="admin">Admin</a>
+              <a name="user" href="user">User</a>
+            </iron-selector>
+        </app-drawer>
+      </template>
+
+      <!-- Main content -->
+      <app-header-layout has-scrolling-region>
+
+        <app-header slot="header" condenses reveals effects="waterfall">
+          <app-toolbar>
+            <template is="dom-if" if="[[isAdmin(role)]]">
+              <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
+            </template>
+            <div main-title><%= appName %></div>
+            <paper-icon-button icon="my-icons:lock" on-click="signIn" hidden$="[[authenticated]]"></paper-icon-button>
+            <paper-icon-button class="avatar" src="[[loggedUser.photoURL]]" on-click="signOut" hidden$="[[!authenticated]]">Sign Out</paper-icon-button>
+          </app-toolbar>
+        </app-header>
+
+        <template is="dom-if" if="[[!authenticated]]">
+          <view-home name="home"></viwe-home>
+        </template>
+        <template is="dom-if" if="[[authenticated]]">
+          <template is="dom-if" if="[[isAdmin(role)]]">
+            <iron-pages
+                selected="[[page]]"
+                attr-for-selected="name"
+                fallback-selection="view404"
+                role="main">
+              <template is="dom-if" if="[[isAdmin(role)]]">
+                <view-admin name="admin"></view-admin>
+              </template>
+              <view-user name="user"></view-user>
+              <view-404 name="view404"></view-404>
+            </iron-pages>
+          </template>
+          <template is="dom-if" if="[[!isAdmin(role)]]">
+            <view-user name="user"></view-user>
+          </template>
+        </template>
+      </app-header-layout>
+    </app-drawer-layout>
+  </template>
+
+  <script>
+    class <%= appNameCamel %> extends Polymer.LazyImportsMixin(Polymer.Element) {
+
+      static get is() { return '<%= appNameDash %>'; }
+
+      static get properties() {
+        return {
+          hostDomain: String,
+          apiKey: String,
+          projectId: String,
+          messagingSenderId: String,
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged',
+          },
+          rootPattern: String,
+          routeData: Object,
+          subroute: String,
+          loggedUser: {
+            type: Object
+          },
+          user: {
+            type: Object,
+            observer: '_userChanged'
+          },
+          role: String,
+          userPath: String,
+          authenticated: {
+            type: Boolean,
+            observer: '_authenticatedChanged'
+          },
+          token: {
+            type: String,
+          },
+          expiry: {
+            type: Date
+          }
+        };
+      }
+
+      static get observers() {
+        return [
+          '_routePageChanged(routeData.page)',
+          '_userRoleChanged(role)'
+        ];
+      }
+
+      get defaultPage() {
+        return this.authenticated ? 'user' : 'home';
+      }
+
+      constructor() {
+        super();
+
+        // Get root pattern for app-route, for more info about `rootPath` see:
+        // https://www.polymer-project.org/2.0/docs/upgrade#urls-in-templates
+        this.rootPattern = (new URL(this.rootPath)).pathname;
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        if (this.hostDomain) {
+          Polymer.Async.idlePeriod.run(function(){
+            var _providerFromName = this.$.auth._providerFromName;
+            var hostDomain = this.hostDomain
+            this.$.auth._providerFromName = function(provider) {
+              var provider = _providerFromName(provider);
+              provider.setCustomParameters({
+                hd: hostDomain
+              });
+              return provider;
+            }
+          }.bind(this));
+        }
+      }
+
+      _routePageChanged(page) {
+        // Polymer 2.0 will call with `undefined` on initialization.
+        // Ignore until we are properly called with a string.
+        if (page === undefined) {
+          return;
+        }
+
+        // If no page was found in the route data, page will be an empty string.
+        // Deault to 'view1' in that case.
+        this.page = page || this.defaultPage;
+
+        // Close a non-persistent drawer when the page & route are changed.
+        if (this.$.drawer && !this.$.drawer.persistent) {
+          this.$.drawer.close();
+        }
+      }
+
+      _pageChanged(page) {
+        this.importLazyGroup(page)
+          .then((results) => {
+            window.dispatchEvent(new CustomEvent('resize'));
+          })
+          .catch(this._showPage404.bind(this));
+      }
+
+      _showPage404() {
+        this.page = 'view404';
+      }
+
+      signIn() {
+        this.$.auth.signInWithPopup();
+      };
+
+      signOut() {
+        this.$.auth.signOut();
+      };
+
+      _authenticatedChanged(authenticated) {
+        this.set('routeData.page', this.defaultPage);
+        if (authenticated) {
+          this.importLazyGroup('authenticated').then((results) => {
+            window.dispatchEvent(new CustomEvent('resize'));
+          });
+        }
+      }
+
+      _userRoleChanged(role) {
+        this.$.appDrawerLayout.forceNarrow = false;
+        if (this.isAdmin(role)) {
+          this.$.appDrawerLayout.forceNarrow = false;
+          this.importLazyGroup('admin').then((results) => {
+            window.dispatchEvent(new CustomEvent('resize'));
+            this.$.drawer = this.shadowRoot.querySelector('#drawer');
+          });
+        } else {
+          this.$.appDrawerLayout.forceNarrow = true;
+        }
+      }
+
+      _userPath(loggedUser) {
+        return loggedUser ? '/users/' + loggedUser.uid : null;
+      }
+
+      _userChanged(user) {
+        if (this.loggedUser && user && !user.email) {
+          this.$.document.data = {
+            email: this.loggedUser.email || null,
+            displayName: this.loggedUser.displayName || null,
+            photoURL: this.loggedUser.photoURL || null,
+            phoneNumber: this.loggedUser.phoneNumber || null
+          };
+          this.$.document.saveValue('/users', this.loggedUser.uid);
+        }
+      }
+
+      isAdmin(role) {
+        return role === 'admin';
+      }
+    }
+
+    window.customElements.define(<%= appNameCamel %>.is, <%= appNameCamel %>);
+  </script>
+</dom-module>

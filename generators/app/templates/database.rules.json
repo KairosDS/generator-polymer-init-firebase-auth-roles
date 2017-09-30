@@ -1,0 +1,19 @@
+{
+  "rules": {
+		".read": "auth != null",
+    ".write": "auth != null",
+    "roles": {
+      ".read": "root.child('roles').child(auth.uid).val().matches(/^admin$/i)",
+      "$uid": {
+        ".read": "auth.uid == $uid || root.child('roles').child(auth.uid).val().matches(/^admin$/i)",
+        ".write": "root.child('roles').child(auth.uid).val().matches(/^admin$/)"
+      }
+    },
+    "users": {
+      "$uid": {
+        ".read": "auth.uid == $uid",
+        ".write": "auth.uid == $uid"
+      }
+    }
+  }
+}
